@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiFi Wizard</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Connect to WiFi</h1>
+        <form method="POST" action="/save_wifi">
+            <div class="form-group">
+                <label for="ssid">SSID:</label>
+                <div id="networks"></div>
+            </div>
+            <div class="input-group">
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" placeholder="Enter WiFi password">
+            </div>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+    <script>
+        function fetchNetworks() {
+            fetch('/scan_wifi').then(res => res.json()).then(data => {
+                if (data.status === 'in_progress') {
+                    document.getElementById('networks').innerHTML = "Scanning in progress... Please wait.";
+                    setTimeout(fetchNetworks, 2000);
+                } else if (data.status === 'done') {
+                    console.log("Scan complete!");
+                    const networks = data.networks;
+                    let options = '<select name="ssid">';
+                    networks.forEach(network => {
+                        options += `<option value="${network.ssid}">${network.ssid} (${network.rssi} dBm)</option>`;
+                    });
+                    options += '</select>';
+                    document.getElementById('networks').innerHTML = options;
+                } else {
+                    console.error("Scan failed!");
+                }
+            });
+        }
+
+        // Запуск сканирования при загрузке страницы
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('/start_scan').then(() => fetchNetworks());
+        });
+    </script>
+</body>
+</html>

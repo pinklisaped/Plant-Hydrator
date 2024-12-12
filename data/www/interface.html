@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration of hydration</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Configuration</h1>
+        <form method="POST" action="/save">
+            <div class="form-group">
+                <label for="interval">Interval:</label>
+                <select name="interval" id="interval">
+                    <option value="30">30 minutes</option>
+                    <option value="60">1 hour</option>
+                    <option value="120">2 hours</option>
+                    <option value="240">4 hours</option>
+                    <option value="720">12 hours</option>
+                    <option value="1080">18 hours</option>
+                    <option value="1440" selected>1 day (24h)</option>
+                    <option value="2160">1.5 days (36h)</option>
+                    <option value="2880">2 days (48h)</option>
+                    <option value="3600">2.5 days (60h)</option>
+                    <option value="4320">3 days (72h)</option>
+                    <option value="5040">3.5 days (84h)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="duration">Duration (seconds):</label>
+                <input type="number" name="duration" id="duration" min="5" value="10" placeholder="Hydration duration" required>
+            </div>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</body>
+</html>
